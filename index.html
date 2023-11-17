@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: black;
+    }
+
+    #quiz-container {
+      width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    filter: drop-shadow( 10px 10px 10px  white);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #question {
+      margin-bottom: 10px;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #correct-answer {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-btn {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
+  <title>Advanced Quiz Game</title>
+</head>
+<body>
+
+<div id="quiz-container">
+  <h1> Quiz Game</h1>
+  <div id="question"></div>
+  <div class="option" onclick="checkAnswer(0)"></div>
+  <div class="option" onclick="checkAnswer(1)"></div>
+  <div class="option" onclick="checkAnswer(2)"></div>
+  <div class="option" onclick="checkAnswer(3)"></div>
+  <div id="result"></div>
+  <div id="correct-answer"></div>
+  <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+</div>
+
+<script>
+  const questions = [
+    {
+      question: "What is the capital of Japan?",
+      options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+      correctAnswer: 2
+    },
+    {
+      question: "Which element has the chemical symbol 'Fe'?",
+      options: ["Iron", "Gold", "Silver", "Copper"],
+      correctAnswer: 0
+    },
+    {
+      question: "In what year did World War II end?",
+      options: ["1943", "1945", "1948", "1950"],
+      correctAnswer: 1
+    },
+    {
+      question: "Who wrote 'Romeo and Juliet'?",
+      options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      correctAnswer: 1
+    },
+    {
+      question: "What is the capital of Australia?",
+      options: ["Sydney", "Canberra", "Melbourne", "Brisbane"],
+      correctAnswer: 1
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  function displayQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsElements = document.querySelectorAll(".option");
+    const nextButton = document.getElementById("next-btn");
+
+    questionElement.textContent = questions[currentQuestion].question;
+
+    optionsElements.forEach((element, index) => {
+      element.textContent = questions[currentQuestion].options[index];
+    });
+
+    // Hide result, correct answer, and show next button
+    document.getElementById("result").textContent = "";
+    document.getElementById("correct-answer").textContent = "";
+    nextButton.style.display = "none";
+  }
+
+  function checkAnswer(selectedOption) {
+    const resultElement = document.getElementById("result");
+    const correctAnswerElement = document.getElementById("correct-answer");
+    const nextButton = document.getElementById("next-btn");
+
+    if (selectedOption === questions[currentQuestion].correctAnswer) {
+      score++;
+      resultElement.textContent = "Correct!";
+    } else {
+      resultElement.textContent = "Incorrect!";
+      correctAnswerElement.textContent = `Correct Answer: ${questions[currentQuestion].options[questions[currentQuestion].correctAnswer]}`;
+    }
+
+    // Show next button
+    nextButton.style.display = "block";
+  }
+
+  function nextQuestion() {
+    const nextButton = document.getElementById("next-btn");
+    nextButton.style.display = "none";
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+      displayQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+
+  function endQuiz() {
+    const quizContainer = document.getElementById("quiz-container");
+    quizContainer.innerHTML = `<h1>Quiz Completed</h1>
+                               <p>Your Score: ${score} out of ${questions.length}</p>`;
+  }
+
+  // Display the first question
+  displayQuestion();
+</script>
+
+</body>
+</html>
